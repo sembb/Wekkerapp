@@ -26,11 +26,8 @@ public class MainActivity extends AppCompatActivity {
         final Button getTimeBtn = findViewById(R.id.getTimeBtn);
         final TextView showText = findViewById(R.id.showText);
         Intent intent = new Intent(this, AlarmActivation.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 234324243, intent, 0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
-                + (5 * 1000), pendingIntent);
-        Toast.makeText(this, "Alarm set in " + 5 + " seconds",Toast.LENGTH_LONG).show();
+        final PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 234324243, intent, 0);
+        final AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
 
         getTimeBtn.setOnClickListener(new View.OnClickListener() {
@@ -39,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 int uur = klok.getHour();
                 int minuut = klok.getMinute();
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.HOUR_OF_DAY, uur);
+                cal.set(Calendar.MINUTE, minuut);
+                cal.set(Calendar.SECOND, 0);
+                cal.set(Calendar.MILLISECOND, 0);
+                Toast.makeText(getApplication().getApplicationContext(), "Alarm gaat om " + uur + ":" + minuut,Toast.LENGTH_LONG).show();
+                alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+
                 showText.setText(Integer.toString(uur) + ':' + Integer.toString(minuut));
 
             }
