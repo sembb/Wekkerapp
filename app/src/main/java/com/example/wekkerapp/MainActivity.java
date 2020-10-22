@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final TimePicker klok = findViewById(R.id.timePicker1);
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 cal.set(Calendar.MILLISECOND, 0);
                 Toast.makeText(getApplication().getApplicationContext(), "Alarm gaat om " + uur + ":" + minuut,Toast.LENGTH_LONG).show();
                 alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+
 
                 showText.setText(Integer.toString(uur) + ':' + Integer.toString(minuut));
 
