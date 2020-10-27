@@ -5,11 +5,14 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 public class WekkerService extends IntentService {
+
+    public static MediaPlayer mediaPlayer;
     public WekkerService() {
         super("WekkerService");
 
@@ -22,10 +25,13 @@ public class WekkerService extends IntentService {
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        Log.d("handling", "is aan het handlen");
+        Log.d("test", "onHandleIntent: ");
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.alarmpie);
+        if (MainActivity.FULL_SCREEN_ACTION.equals(intent.getAction()))
 
-        Intent alarmIntent = new Intent(this, MainActivity2.class);
-        alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(alarmIntent);
+            mediaPlayer.setLooping(true);
+        mediaPlayer.start(); // no need to call prepare(); create() does that for you
+        MainActivity.CreateFullScreenNotification(getApplicationContext());
+
     }
 }
