@@ -30,6 +30,11 @@ public class MainActivity extends AppCompatActivity {
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
+        /*  zuja: deze werkt inderdaad pas vanaf android 8.0, maar ga hier ook maar van uit.
+            Dit komt van https://developer.android.com/training/notify-user/channels, maar
+            probeer dit ook toe te passen. Zoals je het nu gebruikt hebt, klopt het volgens mij
+            niet helemaal.
+        */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "Alarm";
             String description = "Het alarm gaat";
@@ -91,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_USER_ACTION | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
+        // Zuja 2-11-2020: Klopt deze gebruikt van de NotificationManager wel?
+        // Volgens mij wil je iets sturen naar de NotificationManager?
+        // In createNotificationChannel hieronder klopt het al beter.
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(context, CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_launcher_background)
