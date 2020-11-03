@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.wekkerapp">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"/>
@@ -31,6 +32,10 @@
 
         <service
             android:name=".WekkerService"
+            android:enabled="true"/>
+
+        <service
+            android:name=".NotificationService"
             android:enabled="true"/>
 
 

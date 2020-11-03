@@ -13,11 +13,18 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 public class AlarmActivation extends BroadcastReceiver {
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context, Intent intent) {
+        Intent intentje = new Intent(context, WekkerService.class);
+        Notification notification = new NotificationCompat.Builder(context, "2")
+                .setContentTitle("")
+                .setContentText("").build();
+        context.startForegroundService(intentje);
     }
 
 }

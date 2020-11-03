@@ -5,8 +5,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String CHANNEL_ID = "my_channel";
     static final String FULL_SCREEN_ACTION = "full_screen_action";
     static final int NOTIFICATION_ID = 1;
+    static NotificationCompat.Builder notificationBuilder;
+    static NotificationManager notificationManager;
 
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -38,14 +42,14 @@ public class MainActivity extends AppCompatActivity {
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
-            NotificationManager notificationManager = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
+            notificationManager = (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
         }
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        createNotificationChannel(this);
+        createNotificationChannel();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
                 | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
                 | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -64,21 +68,13 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(FULL_SCREEN_ACTION, null, getApplicationContext(), WekkerService.class);
-                PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                int uur = klok.getHour();
-                int minuut = klok.getMinute();
-                Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.HOUR_OF_DAY, uur);
-                cal.set(Calendar.MINUTE, minuut);
-                cal.set(Calendar.SECOND, 0);
-                cal.set(Calendar.MILLISECOND, 0);
-                Toast.makeText(getApplication().getApplicationContext(), "Alarm gaat om " + uur + ":" + minuut,Toast.LENGTH_LONG).show();
-                alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
+                    int uur = klok.getHour();
+                    int minuut = klok.getMinute();
+                Intent serviceIntent = new Intent(getApplicationContext(), WekkerService.class);
+                serviceIntent.putExtra("uur", uur);
+                serviceIntent.putExtra("minuut", minuut);
+                ContextCompat.startForegroundService(getApplicationContext(), serviceIntent);
 
-
-                showText.setText(Integer.toString(uur) + ':' + Integer.toString(minuut));
-                NotificationManagerCompat.from(getApplicationContext()).cancel(NOTIFICATION_ID);
 
             }
         });
@@ -91,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_USER_ACTION | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder notificationBuilder =
+        notificationBuilder =
                 new NotificationCompat.Builder(context, CHANNEL_ID)
                         .setSmallIcon(R.drawable.ic_launcher_background)
                         .setContentTitle("Alarm")
@@ -101,17 +97,5 @@ public class MainActivity extends AppCompatActivity {
                         .setContentIntent(pendingIntent)
                         .setFullScreenIntent(pendingIntent, true);
         NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, notificationBuilder.build());
-    }
-
-    private static void createNotificationChannel(Context context) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-
-            if (notificationManager.getNotificationChannel(CHANNEL_ID) == null) {
-                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, "channel_name", NotificationManager.IMPORTANCE_HIGH);
-                channel.setDescription("channel_description");
-                notificationManager.createNotificationChannel(channel);
-            }
-        }
     }
 }
