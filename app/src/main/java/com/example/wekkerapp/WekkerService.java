@@ -57,9 +57,12 @@ public class WekkerService extends IntentService {
             cal.set(Calendar.MINUTE, minuut);
             cal.set(Calendar.SECOND, 0);
             cal.set(Calendar.MILLISECOND, 0);
+            if (System.currentTimeMillis() > cal.getTimeInMillis()) {
+                cal.add(Calendar.DATE, 1);
+            }
             Toast.makeText(getApplication().getApplicationContext(), "Alarm gaat om " + uur + ":" + minuut, Toast.LENGTH_LONG).show();
-            Log.d("BRUH", "onStartCommand: a");
-            alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent2);
+            long delay = 24 * 60 * 60 * 1000;
+            alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),pendingIntent2);
 
 
             //do heavy work on a background thread

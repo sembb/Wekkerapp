@@ -6,10 +6,41 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#9EFFFFFF"
+        android:foreground="@color/doorzichtig"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timePicker1"
+        app:srcCompat="@drawable/pexels___1560424" />
+
+    <TextView
+        android:id="@+id/showText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#B341C6"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/getTimeBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timePicker1" />
+
     <TimePicker
         android:id="@+id/timePicker1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:hapticFeedbackEnabled="true"
+        android:headerBackground="@color/colorPrimary"
+        android:numbersBackgroundColor="#9CFFFFFF"
+        android:numbersSelectorColor="#9FB341C6"
         android:timePickerMode="clock"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,20 +49,13 @@
 
     <Button
         android:id="@+id/getTimeBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Get time"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timePicker1" />
-
-    <TextView
-        android:id="@+id/showText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:background="#B341C6"
+        android:text="Zet Alarm"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/getTimeBtn" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
