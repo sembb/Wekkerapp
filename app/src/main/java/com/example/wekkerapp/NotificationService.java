@@ -1,11 +1,13 @@
 package com.example.wekkerapp;
 
+import android.animation.ObjectAnimator;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
@@ -20,6 +22,8 @@ public class NotificationService extends IntentService {
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         vibe = (Vibrator) getSystemService(this.VIBRATOR_SERVICE);
+
+
         mp = mp.create(getApplicationContext(), R.raw.alarmpie);
         mp.start();
         mp.setLooping(true);
